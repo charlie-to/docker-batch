@@ -1,0 +1,12 @@
+version: "3"
+services:
+  python:
+    container_name: "python"
+    build:
+      context: .
+      dockerfile: ./docker/python/Dockerfile
+    tty: true
+    stdin_open: true
+    volumes:
+      - ./src:/workspace/src
+    command: sleep infinity

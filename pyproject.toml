@@ -1,0 +1,21 @@
+[tool.poetry]
+name = "batch analysis"
+version = "0.1.0"
+description = ""
+authors = ["charlie-to <62843186+charlie-to@users.noreply.github.com >"]
+readme = "README.md"
+
+[tool.poetry.dependencies]
+python = "^3.10"
+numpy = "^1.26.2"
+pandas = "^2.1.3"
+geopandas = "^0.14.1"
+scipy = "^1.11.4"
+matplotlib = "^3.8.2"
+contextily = "^1.4.0"
+scienceplots = "^2.1.1"
+
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
