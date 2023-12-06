@@ -225,3 +225,4 @@ data/
 
 # delete poetry.lock
 poetry.lock
+docker-compose.yml.template
