@@ -1,0 +1,15 @@
+version: '3'
+
+tasks:
+  build:
+    cmds:
+      - docker compose build --no-cache
+  console:
+    cmds:
+      - docker compose run --rm python bash
+  hello:
+    cmds:
+      - docker compose run --rm python python /workspace/src/tests/hello.py
+  dataset:
+    cmds:
+      - docker compose run --rm python python /workspace/src/dataset/make_dataset.py
