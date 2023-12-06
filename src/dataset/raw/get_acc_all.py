@@ -14,7 +14,7 @@ from .speed import calculate_and_add_speed_data
 def get_acc_all(file_name_start_with: str = "") -> pd.DataFrame:
     file_dir: str = os.environ["DATA_IMPORT_PATH"]
     # ファイル名取得
-    file_names = glob.glob(file_dir + "raw/" + file_name_start_with + "*")
+    file_names = glob.glob(file_dir + "/raw/" + file_name_start_with + "*")
     print(file_names)
     print(os.getcwd())
     gdf1: pd.DataFrame = gpd.GeoDataFrame()
@@ -24,6 +24,9 @@ def get_acc_all(file_name_start_with: str = "") -> pd.DataFrame:
         gdf1 = pd.concat([gdf1, _df], axis=0)
 
     pprint(gdf1)
+    # gdf1 が空の場合はエラー
+    if gdf1.empty:
+        raise ValueError("gdf1 is empty")
 
     # speed が０の時は静止している
     # そのときの加速度を基準にする

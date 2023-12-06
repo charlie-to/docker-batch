@@ -11,7 +11,7 @@ def gps_acceleration_to_df(file_dir, file_name) -> gpd.GeoDataFrame | pd.DataFra
     columns_name = ["index", "time", "text", "info"]
     ###
 
-    with open(file_dir + file_name, encoding="utf-8") as f:
+    with open(file_dir + "/raw/" + file_name, encoding="utf-8") as f:
         texts = f.read().split("\n")
 
     raw_data: list[str] = []
@@ -43,7 +43,9 @@ def gps_acceleration_to_df(file_dir, file_name) -> gpd.GeoDataFrame | pd.DataFra
         acceleration_z.append(acceleration[2])
 
     # TODO: 三次元変換が必要
-    df_acceleration = pd.DataFrame([acceleration_index, acceleration_x, acceleration_y, acceleration_z]).T
+    df_acceleration = pd.DataFrame(
+        [acceleration_index, acceleration_x, acceleration_y, acceleration_z]
+    ).T
     df_acceleration = df_acceleration.rename(
         columns={
             0: "in_file_index",
@@ -83,9 +85,32 @@ def gps_acceleration_to_df(file_dir, file_name) -> gpd.GeoDataFrame | pd.DataFra
         latitude_1.append(text[index + 5 + 13 : index + 5 + 13 + 2])
         latitude_2.append(text[index + 5 + 13 + 2 : index + 5 + 13 + 1 + 10])
         latitude_str.append(text[index + 5 + 13 + 11 + 1 : index + 5 + 13 + 11 + 1 + 1])
-        longitude_1.append(text[index + 5 + 13 + 11 + 2 + 1 : index + 5 + 13 + 11 + 1 + 2 + 3])
-        longitude_2.append(text[index + 5 + 13 + 11 + 2 + 4 : index + 5 + 13 + 11 + 1 + 2 + 12])
-        longitude_str.append(text[index + 5 + 13 + 11 + 2 + 1 + 12 + 1 : index + 5 + 13 + 11 + 1 + 2 + 12 + 1 + 1])
+        longitude_1.append(
+            text[index + 5 + 13 + 11 + 2 + 1 : index + 5 + 13 + 11 + 1 + 2 + 3]
+        )
+        longitude_2.append(
+            text[index + 5 + 13 + 11 + 2 + 4 : index + 5 + 13 + 11 + 1 + 2 + 12]
+        )
+        longitude_str.append(
+            text[
+                index
+                + 5
+                + 13
+                + 11
+                + 2
+                + 1
+                + 12
+                + 1 : index
+                + 5
+                + 13
+                + 11
+                + 1
+                + 2
+                + 12
+                + 1
+                + 1
+            ]
+        )
 
     latitude_1 = [float(e) for e in latitude_1]
     latitude_2 = [float(e) / 60 for e in latitude_2]
@@ -127,7 +152,9 @@ def gps_acceleration_to_df(file_dir, file_name) -> gpd.GeoDataFrame | pd.DataFra
     # 時間
     time_str: list[str] = file_name.split("_")[1:7]
     time_str = [int(i) for i in time_str]
-    time = dt.datetime(time_str[0], time_str[1], time_str[2], time_str[3], time_str[4], time_str[5])
+    time = dt.datetime(
+        time_str[0], time_str[1], time_str[2], time_str[3], time_str[4], time_str[5]
+    )
     pd.to_datetime(time)
 
     df = pd.concat(
@@ -135,7 +162,12 @@ def gps_acceleration_to_df(file_dir, file_name) -> gpd.GeoDataFrame | pd.DataFra
         axis=1,
     )
     df = df.assign(file_name=file_name)
-    pd_times = pd.Series([pd.to_datetime(time + dt.timedelta(milliseconds=i * 100)) for i in range(len(df))])
+    pd_times = pd.Series(
+        [
+            pd.to_datetime(time + dt.timedelta(milliseconds=i * 100))
+            for i in range(len(df))
+        ]
+    )
     df = df.assign(time=pd_times.values)
     df = df.set_index("time")
     # 緯度経度の補間
@@ -144,7 +176,9 @@ def gps_acceleration_to_df(file_dir, file_name) -> gpd.GeoDataFrame | pd.DataFra
 
     gdf = gpd.GeoDataFrame(
         df,
-        geometry=gpd.points_from_xy(df.longitude1 + df.longitude2, df.latitude1 + df.latitude2, crs="EPSG:4326"),
+        geometry=gpd.points_from_xy(
+            df.longitude1 + df.longitude2, df.latitude1 + df.latitude2, crs="EPSG:4326"
+        ),
     )
 
     # lat,lon を追加

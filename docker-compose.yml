@@ -9,6 +9,7 @@ services:
     stdin_open: true
     volumes:
       - ./src:/workspace/src
+      - ./data:/workspace/data
     env_file:
       - .env
     command: sleep infinity
