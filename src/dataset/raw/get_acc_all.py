@@ -11,8 +11,7 @@ from .get_rotation_array import get_rotation_array
 from .speed import calculate_and_add_speed_data
 
 
-def get_acc_all(file_name_start_with: str = "") -> pd.DataFrame:
-    file_dir: str = os.environ["DATA_IMPORT_PATH"]
+def get_acc_all(file_dir: str, file_name_start_with: str = "") -> pd.DataFrame:
     # ファイル名取得
     file_names = glob.glob(file_dir + "/raw/" + file_name_start_with + "*")
     print(file_names)

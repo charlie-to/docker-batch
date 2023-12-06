@@ -9,7 +9,7 @@ services:
     stdin_open: true
     volumes:
       - ./src:/workspace/src
-      - ./data:/workspace/data
+      - ./data:${DATA_IMPORT_PATH}
     env_file:
       - .env
     command: sleep infinity
