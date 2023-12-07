@@ -10,4 +10,4 @@ insert_final_newline = true # ファイル末尾に改行を入れる
 trim_trailing_whitespace = true # 行末の空白を削除する
 
 [*.py] # .py ファイルのみに適用する設定
-indent_size = 2 # インデント幅を 4 とする
+indent_size = 4 # インデント幅を 4 とする
