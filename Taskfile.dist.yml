@@ -13,3 +13,6 @@ tasks:
   dataset:
     cmds:
       - docker compose run --rm python python /workspace/src/dataset/make_dataset.py
+  normalize:
+    cmds:
+      - docker compose run --rm python python /workspace/src/dataset/check_normal.py
