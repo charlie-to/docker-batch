@@ -9,7 +9,7 @@ DATA_IMPORT_PATH = os.environ.get("DATA_IMPORT_PATH")
 
 
 def read_evt_file(participant_name: str) -> gpd.GeoDataFrame:
-    df = pd.read_csv(DATA_IMPORT_PATH + participant_name + "/processed/evt_all.csv")
+    df = pd.read_csv(DATA_IMPORT_PATH + participant_name + "/processed/EVT_ALL.csv")
     columns_name = df.columns.values.tolist()
     columns_name[0] = "time"
     df.columns = columns_name

@@ -4,7 +4,7 @@ import pandas as pd
 from raw.get_acc_all import get_acc_all
 
 data_import_path: str = os.environ["DATA_IMPORT_PATH"]
-participant_names = os.environ["P_NAMES"].split(" ")
+participant_names = os.environ["PARTICIPANT_NAMES"].split(" ")
 
 
 def save_evt_all(data_path: str) -> None:

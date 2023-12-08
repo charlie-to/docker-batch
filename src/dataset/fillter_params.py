@@ -107,7 +107,7 @@ if __name__ == "__main__":
     df = read_evt_file(PARTICIPANT_NAMES[0])
     # Read in the answer data
     df_ans = pd.read_csv(
-        DATA_IMPORT_PATH + PARTICIPANT_NAMES[0] + "/processed/iwaki_watch.csv"
+        DATA_IMPORT_PATH + PARTICIPANT_NAMES[0] + "/watch/watch_AS-FKD.csv"
     )
     # thresholds
     thresholds = [0.1, 0.2, 0.3, 0.4, 0.5]
