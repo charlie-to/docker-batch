@@ -21,7 +21,7 @@
   ],
   //isort
   "editor.codeActionsOnSave": {
-    "source.organizeImports": true
+    "source.organizeImports": "explicit"
   },
   "isort.args": ["--profile", "black"],
   //black
@@ -30,7 +30,7 @@
     "editor.formatOnType": true,
     //isort
     "editor.codeActionsOnSave": {
-      "source.organizeImports": true
+      "source.organizeImports": "explicit"
     },
     },
 
