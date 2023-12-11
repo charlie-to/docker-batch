@@ -14,8 +14,12 @@ def plot_evt_df_acc(df: pd.DataFrame, participant_name: str, file_name: str) -> 
     fig, ax = plt.subplots()
     df["rotated_acceleration_x"].plot(ax=ax, label="acc_x")
     df["rotated_acceleration_x"].rolling(20).median().plot(ax=ax, label="acc_x_median")
+    ax.set_ylim([-0.8, 0.5])
     ax.legend()
-    fig.savefig(f"{DATA_IMPORT_PATH}{participant_name}/plot/{file_name}_acc_x.png")
+    fig.savefig(
+        f"{DATA_IMPORT_PATH}{participant_name}/plot/evt_acc/{file_name}_acc_x.png"
+    )
+    plt.close()
 
 
 if __name__ == "__main__":
