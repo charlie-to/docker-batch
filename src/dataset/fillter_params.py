@@ -103,48 +103,49 @@ def caluculate_recall(
 
 
 if __name__ == "__main__":
-    # Read in the data
-    df = read_evt_file(PARTICIPANT_NAMES[0])
-    # Read in the answer data
-    df_ans = pd.read_csv(
-        DATA_IMPORT_PATH + PARTICIPANT_NAMES[0] + "/watch/watch_AS-FKD.csv"
-    )
-    # thresholds
-    thresholds = [0.1, 0.2, 0.3, 0.4, 0.5]
-    window_size = [5, 8, 10, 15, 20, 25]
+    for participant_name in PARTICIPANT_NAMES:
+        # Read in the data
+        df = read_evt_file(PARTICIPANT_NAMES[0])
+        # Read in the answer data
+        df_ans = pd.read_csv(
+            DATA_IMPORT_PATH + PARTICIPANT_NAMES[0] + "/watch/watch_AS-FKD.csv"
+        )
+        # thresholds
+        thresholds = [0.1, 0.2, 0.3, 0.4, 0.5]
+        window_size = [5, 8, 10, 15, 20, 25]
 
-    file_counts = len(df.file_name.unique().tolist())
-    # * calculate accuracy for each threshold and window size
-    acculacy_list: list[list[float]] = []
-    for threshold in thresholds:
-        print("***** threshold : ", threshold, " *****")
-        _acculacy_list: list[float] = []
-        for ws in window_size:
-            print("*** window size : ", ws, " ***")
-            col_name = "rotated_acceleration_x"
-            df2 = apply_median_fillter(df, col_name, window_size=ws)
-            df3 = acc_filter(df2, "x", ws, threshold)
-            acculacy = caluculate_accuracy(df3, df_ans, file_counts)
-            _acculacy_list.append(acculacy)
-        acculacy_list.append(_acculacy_list)
-    # acculacy list to dataframe
-    df_acculacy = pd.DataFrame(acculacy_list, index=thresholds, columns=window_size)
+        file_counts = len(df.file_name.unique().tolist())
+        # * calculate accuracy for each threshold and window size
+        acculacy_list: list[list[float]] = []
+        for threshold in thresholds:
+            print("***** threshold : ", threshold, " *****")
+            _acculacy_list: list[float] = []
+            for ws in window_size:
+                print("*** window size : ", ws, " ***")
+                col_name = "rotated_acceleration_x"
+                df2 = apply_median_fillter(df, col_name, window_size=ws)
+                df3 = acc_filter(df2, "x", ws, threshold)
+                acculacy = caluculate_accuracy(df3, df_ans, file_counts)
+                _acculacy_list.append(acculacy)
+            acculacy_list.append(_acculacy_list)
+        # acculacy list to dataframe
+        df_acculacy = pd.DataFrame(acculacy_list, index=thresholds, columns=window_size)
 
-    # * calculate recall for each threshold and window size
-    recall_list: list[list[float]] = []
-    for threshold in thresholds:
-        print("***** threshold : ", threshold, " *****")
-        _recall_list: list[float] = []
-        for ws in window_size:
-            print("*** window size : ", ws, " ***")
-            col_name = "rotated_acceleration_x"
-            df2 = apply_median_fillter(df, col_name, window_size=ws)
-            df3 = acc_filter(df2, "x", ws, threshold)
-            recall = caluculate_recall(df3, df_ans, file_counts)
-            _recall_list.append(recall)
-        recall_list.append(_recall_list)
-    # recall list to dataframe
-    df_recall = pd.DataFrame(recall_list, index=thresholds, columns=window_size)
+        # * calculate recall for each threshold and window size
+        recall_list: list[list[float]] = []
+        for threshold in thresholds:
+            print("***** threshold : ", threshold, " *****")
+            _recall_list: list[float] = []
+            for ws in window_size:
+                print("*** window size : ", ws, " ***")
+                col_name = "rotated_acceleration_x"
+                df2 = apply_median_fillter(df, col_name, window_size=ws)
+                df3 = acc_filter(df2, "x", ws, threshold)
+                recall = caluculate_recall(df3, df_ans, file_counts)
+                _recall_list.append(recall)
+            recall_list.append(_recall_list)
+        # recall list to dataframe
+        df_recall = pd.DataFrame(recall_list, index=thresholds, columns=window_size)
 
-    print(df_acculacy)
-    print(df_recall)
+        print(df_acculacy)
+        print(df_recall)

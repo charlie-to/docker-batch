@@ -19,3 +19,6 @@ tasks:
   accuracy:
     cmds:
       - docker compose run --rm python python /workspace/src/dataset/fillter_params.py
+  plot:
+    cmds:
+      - docker compose run --rm python python /workspace/src/dataset/plot_all_acc.py
