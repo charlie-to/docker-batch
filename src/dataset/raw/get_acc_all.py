@@ -6,6 +6,7 @@ import geopandas as gpd
 import numpy as np
 import pandas as pd
 
+from ..file_io import read_rec_file
 from .get_gps_acceleration_to_df import gps_acceleration_to_df
 from .get_rotation_array import get_rotation_array
 from .speed import calculate_and_add_speed_data
@@ -31,6 +32,11 @@ def get_acc_all(file_dir: str, file_name_start_with: str = "") -> pd.DataFrame:
     # そのときの加速度を基準にする
     # ?: なんかしらんけど動いている。後で修正が必要かもしれない。。。
     gdf1_speed_zero: pd.DataFrame = gdf1[gdf1["speed"] == 0]
+    # *: evt ならrecを使用して補正
+    if file_name_start_with == "EVT":
+        gdf2: pd.DataFrame = read_rec_file(file_dir.split("/")[-1])
+        gdf2_speed_zero: pd.DataFrame = gdf2[gdf2["speed"] == 0]
+        gdf1_speed_zero = pd.concat([gdf1_speed_zero, gdf2_speed_zero], axis=0)
     rotation, norm = get_rotation_array(gdf1_speed_zero)
 
     def rotate(row):

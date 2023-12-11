@@ -21,4 +21,7 @@ def save_rec_all(data_path: str) -> None:
 
 if __name__ == "__main__":
     for participant in participant_names:
-        save_evt_all(data_path=data_import_path + "/" + participant)
+        save_rec_all(data_path=data_import_path + "/" + participant)
+        save_evt_all(
+            data_path=data_import_path + "/" + participant
+        )  # INFO: rec file is required for evt file to be rotated
