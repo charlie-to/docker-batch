@@ -2,11 +2,9 @@ import os
 
 import contextily as cx
 import geopandas as gpd
-import japanize_matplotlib
 import matplotlib as mpl
 import matplotlib.pyplot as plt
-import pandas as pd
-import scienceplots  # import: ignore
+import scienceplots  # noqa: F401
 
 mpl.use("pgf")
 

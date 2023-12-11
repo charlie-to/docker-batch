@@ -4,12 +4,13 @@ from pprint import pprint
 import geopandas as gpd
 import matplotlib.pyplot as plt
 import pandas as pd
-import scienceplots
+import scienceplots  # noqa
 from shapely import wkt
 
 plt.style.use(["science", "ieee", "japanese"])
 
 DATA_IMPORT_PATH = os.environ.get("DATA_IMPORT_PATH")
+PARTICIPANT_NAMES = os.environ.get("PARTICIPANT_NAMES").split(" ")
 
 
 def add_median_filter(df: pd.DataFrame, col: str, window_size: int) -> pd.DataFrame:
@@ -35,9 +36,9 @@ def filter_cutting_x_axis(df: pd.DataFrame, col: str, threshold: float) -> pd.Da
     return df
 
 
-def fillter():
+def fillter(participant_name: str):
     # Read in the data
-    df = pd.read_csv(DATA_IMPORT_PATH + "raw/processed/evt_all.csv")
+    df = pd.read_csv(DATA_IMPORT_PATH + participant_name + "/processed/evt_all.csv")
     columns_name = df.columns.values.tolist()
     columns_name[0] = "time"
     df.columns = columns_name
@@ -47,8 +48,7 @@ def fillter():
     df.info()
 
     col_name = "rotated_acceleration_x"
-    # window_size = [5, 8, 10, 15, 20, 25]
-    window_size = [20]
+    window_size = [5, 8, 10, 15, 20, 25]
     for ws in window_size:
         df2 = add_median_filter(df, col_name, window_size=ws)
         df2.info()
@@ -57,8 +57,9 @@ def fillter():
     df2 = filter_cutting_x_axis(df2, col_name, threshold=0.2)
     pprint(df2.info())
     print("file counts : ", len(df.file_name.unique()))
-    print("fillered file name :", str(len(df2["file_name"].unique().tolist())))
+    print("filtered file name :", str(len(df2["file_name"].unique().tolist())))
 
 
 if __name__ == "__main__":
-    fillter()
+    for participant_name in PARTICIPANT_NAMES:
+        fillter(participant_name)
