@@ -1,11 +1,23 @@
 import os
 
+import matplotlib as mpl
 import matplotlib.pyplot as plt
 import pandas as pd
 import scienceplots  # noqa: F401
 from file_io import read_evt_file
 
+mpl.use("pgf")
+
 plt.style.use(["science", "ieee"])
+plt.rcParams["text.usetex"] = True
+plt.rcParams["pgf.texsystem"] = "lualatex"
+plt.rcParams["font.family"] = "Noto Sans CJK JP"
+plt.rcParams["font.serif"] = "Noto Sans CJK JP"
+plt.rcParams["pgf.rcfonts"] = False
+
+plt.style.use(["science", "ieee"])
+
+
 DATA_IMPORT_PATH = os.environ["DATA_IMPORT_PATH"]
 PARTICIPANT_NAMES = os.environ["PARTICIPANT_NAMES"].split(" ")
 
