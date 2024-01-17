@@ -29,6 +29,7 @@ def plot_hist_raw_accuracy(
     brake_file_name = brake_file_name + ".srt"
     df_brake = df_raw[df_raw.file_name.isin(brake_file_name)]
 
+    # raw acceleration
     counts_files = []  # count the number of files by each threshold of acceleration
     thresholds = [num * 0.1 for num in range(-10, 0, 1)]
     # filtered files by each threshold of acceleration
@@ -43,4 +44,29 @@ def plot_hist_raw_accuracy(
     ax.set_ylabel("ファイル数")
     fig.savefig(
         DATA_IMPORT_PATH + participant_name + "/processed/compare_raw_vs_threshold.png"
+    )
+
+    # rotated acceleration
+    # raw acceleration
+    counts_files = []  # count the number of files by each threshold of acceleration
+    thresholds = [num * 0.1 for num in range(-10, 0, 1)]
+    # filtered files by each threshold of acceleration
+    for threshold in thresholds:
+        df_filtered = df_brake[
+            df_brake.rotated_acceleration_x.rolling(10).mean() < threshold
+        ]
+        counts_files.append(len(df_filtered.file_name.unique()))
+    for file_name in df_brake.file_name.unique():
+        _df = df_brake[df_brake.file_name == file_name]
+        print(_df.rotated_acceleration_x.rolling(10).mean().min())
+
+    # Plot counts of files by each threshold of acceleration
+    fig, ax = plt.subplots()
+    ax.plot(thresholds, counts_files, marker="x", label="減速挙動(移動平均)")
+    ax.set_xlabel("加速度閾値 [G]")
+    ax.set_ylabel("ファイル数")
+    fig.savefig(
+        DATA_IMPORT_PATH
+        + participant_name
+        + "/processed/compare_rotated_vs_threshold.png"
     )

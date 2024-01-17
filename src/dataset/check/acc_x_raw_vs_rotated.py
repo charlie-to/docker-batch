@@ -31,25 +31,63 @@ def plot_hist_raw_rotated(
     # Plot the data
     fig, ax = plt.subplots()
     ax.hist(
-        df_raw.acceleration_x * 16 / 2048,
+        df_raw.rotated_acceleration_x,
         bins=100,
         density=True,
         alpha=0.5,
-        label="全データ",
-        histtype="bar",
+        label="元データ",
     )
+
     ax.hist(
-        df_brake.acceleration_x * 16 / 2048,
+        df_raw.rotated_acceleration_x.rolling(10).mean(),
         bins=100,
         density=True,
         alpha=0.5,
-        label="減速挙動",
-        histtype="bar",
+        label="移動平均フィルタ",
     )
-    ax.set_xlabel("ログ値加速度 [G]")
-    ax.set_ylabel("度数（規格化後）")
-    ax.set_xlim(-1.2, 0)
+
+    ax.hist(
+        df_raw.rotated_acceleration_x.rolling(20).median(),
+        bins=100,
+        density=True,
+        alpha=0.5,
+        label="メディアンフィルタ",
+    )
+    ax.set_xlabel("加速度 [G]")
+    ax.set_ylabel("度数")
+    ax.set_xlim(-0.6, 0.6)
     ax.legend()
     fig.savefig(
-        DATA_IMPORT_PATH + participant_name + "/processed/compare_raw_vs_rotated.png"
+        DATA_IMPORT_PATH + participant_name + "/processed/compare_raw_vs_filters.png"
+    )
+
+    # plot histgram of brake rotated acceleration vs raw acceleration
+    fig, ax = plt.subplots()
+
+    ax.hist(
+        df_raw.rotated_acceleration_x.rolling(10).mean(),
+        bins=100,
+        density=True,
+        alpha=0.5,
+        label="元データ（移動平均フィルタ）",
+    )
+
+    ax.hist(
+        df_brake.rotated_acceleration_x.rolling(10).mean(),
+        bins=100,
+        density=True,
+        alpha=0.5,
+        label="減速挙動（移動平均フィルタ）",
+    )
+    ax.set_xlabel("加速度 [G]")
+    ax.set_ylabel("度数")
+    ax.set_xlim(-0.6, 0.6)
+    ax.legend()
+    fig.savefig(
+        DATA_IMPORT_PATH + participant_name + "/processed/compare_raw_vs_brake.png"
+    )
+
+    ax.set_xlim(-0.4, -0.2)
+    fig.savefig(
+        DATA_IMPORT_PATH + participant_name + "/processed/compare_raw_vs_brake_zoom.png"
     )
