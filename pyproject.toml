@@ -3,7 +3,6 @@ name = "batch analysis"
 version = "0.1.0"
 description = ""
 authors = ["charlie-to <62843186+charlie-to@users.noreply.github.com >"]
-readme = "README.md"
 
 [tool.poetry.dependencies]
 python = "^3.10"
